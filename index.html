@@ -142,6 +142,11 @@ footer{padding:32px 0 calc(32px + env(safe-area-inset-bottom));font-size:12px;co
 .pagella .bene li::marker{content:"+  ";color:var(--ok)}
 .pagella .meglio li::marker{content:"→  ";color:var(--acc)}
 .pagella .err li::marker{content:"!  ";color:var(--ko)}
+.pagella .obj li::marker{content:"·  ";color:var(--mute)}
+.pagella .obj .si{color:var(--ok)}
+.pagella .obj .no{color:var(--ko)}
+.obiez{margin-top:12px}
+.obiez .nasc{padding:0 16px 16px;font-size:13px;color:var(--mute)}
 .frase{border-left:3px solid var(--acc);padding:4px 0 4px 12px;font:italic 500 19px/1.35 var(--serif)}
 
 @media (min-width:768px){
@@ -171,6 +176,11 @@ footer{padding:32px 0 calc(32px + env(safe-area-inset-bottom));font-size:12px;co
       <div class="n">Primo passo</div>
       <h2 id="h-chi">Con chi ti alleni</h2>
       <div class="scenari" id="scenari" role="radiogroup" aria-labelledby="h-chi"></div>
+      <details class="obiez">
+        <summary><span>Le obiezioni di <span id="obiez-nome"></span></span></summary>
+        <ul id="obiez-lista"></ul>
+        <p class="nasc">In più ce n'è una nascosta: non te la dice finché non fai la domanda giusta. La scopri nella pagella.</p>
+      </details>
     </section>
 
     <section class="passo" aria-labelledby="h-diff">
@@ -236,7 +246,7 @@ footer{padding:32px 0 calc(32px + env(safe-area-inset-bottom));font-size:12px;co
 
 <script src="elevenlabs-client-1.28.0.js"></script>
 <script>
-const CFG = {"slug": "tenuta-pizzone", "agent_id": "agent_9801m6k0c221ecwvh67m15bnwvqv", "pagina": {"titolo": "La sposa difficile", "sottotitolo": "L'open day è finito e siete davanti al camino, con un calice. Lei ha ancora dei dubbi e tu hai dieci minuti per farla decidere.", "allievo": "Caterina", "ripasso": ["3.500 € + IVA 10% per la stagione 2027. Dentro ci sono la tenuta in esclusiva fino all'una, le cinque camere con la colazione, la pagoda, le luci della corte, della pagoda e del taglio torta, l'antizanzare, la degustazione in cantina e l'aiuto a scegliere i fornitori.", "Il vino della cantina è illimitato e già nel prezzo a persona con Langella Banqueting, Doma Catering e Farumi Party Service.", "Garanzia Cielo Aperto: se piove, aperitivo, cena e ballo vanno sotto la pagoda chiusa, con gli stessi allestimenti e le stesse luci. Non costa niente in più e non c'è una sala di ripiego.", "In sessanta si paga lo stesso prezzo a persona di un matrimonio da centodieci, senza il minimo di ottanta coperti.", "Si conferma con 1.000 € di acconto e 1.000 € di deposito. Il saldo si paga nella settimana del matrimonio.", "Bride experience in regalo per chi conferma entro gennaio. Il 2028 resta al prezzo 2027 per chi conferma entro il 31 gennaio 2027.", "Si fa un solo matrimonio a weekend e a inizio ottobre restavano 19 sabati liberi.", "Extra: cerimonia simbolica 350 €, auto d'epoca 500 €, ore dopo l'una 350 € l'ora, pulizia dei bagni durante la festa 150 €. Coordinamento del giorno e pre wedding sono su preventivo."]}, "scenari": [{"id": "portico", "nome": "Giulia", "ruolo": "La sposa", "voce": "QITiGyM4owEZrBEf0QV8", "tag": "La pagoda e la pioggia", "situazione": "Ha amato la corte e le camere, ma la pagoda non l'ha vista montata. E un'altra location ha un portico in muratura.", "apertura": "Allora... è tutto bellissimo, davvero. Però te lo devo dire, la pagoda mi lascia un po' così."}, {"id": "prezzo", "nome": "Marco", "ruolo": "Lo sposo che tiene i conti", "voce": "GOAZNavLupajyL3YafaD", "tag": "Il prezzo e gli extra", "situazione": "Alla sposa piace tutto, lui fa i conti. Vuole uno sconto e teme le sorprese dopo il sì.", "apertura": "Guarda, alla mia futura moglie piace tantissimo, si vede. Io però devo far quadrare i conti. Parliamo un attimo di numeri?"}, {"id": "ci-pensiamo", "nome": "Chiara", "ruolo": "La sposa indecisa", "voce": "kAzI34nYjizE0zON6rXv", "tag": "«Ci pensiamo»", "situazione": "Entusiasta, ma ha promesso di vedere altre due location e vuole decidere a febbraio con il fidanzato.", "apertura": "Che giornata! Mi è piaciuto tutto, giuro. Però noi... ci prendiamo un attimo per pensarci, eh."}, {"id": "mamma", "nome": "Rossana", "ruolo": "La mamma della sposa", "voce": "MuTiG4dbrEGYEy3XP4iP", "tag": "Diffidenza", "situazione": "Paga metà del matrimonio. Pensa che la tenuta sia giovane, e la parola «agriturismo» le gira in testa.", "apertura": "Buonasera. Io sono la mamma, eh. Mia figlia è innamorata, si vede. Ma io qualche domanda la devo fare."}]};
+const CFG = {"slug": "tenuta-pizzone", "agent_id": "agent_9801m6k0c221ecwvh67m15bnwvqv", "pagina": {"titolo": "La sposa difficile", "sottotitolo": "L'open day è finito e siete davanti al camino, con un calice. Lei ha ancora dei dubbi e tu hai dieci minuti per farla decidere.", "allievo": "Caterina", "ripasso": ["3.500 € + IVA 10% per la stagione 2027. Dentro ci sono la tenuta in esclusiva fino all'una, le cinque camere con la colazione, la pagoda, le luci della corte, della pagoda e del taglio torta, l'antizanzare, la degustazione in cantina e l'aiuto a scegliere i fornitori.", "Il vino della cantina è illimitato e già nel prezzo a persona con Langella Banqueting, Doma Catering e Farumi Party Service.", "Garanzia Cielo Aperto: se piove, aperitivo, cena e ballo vanno sotto la pagoda chiusa, con gli stessi allestimenti e le stesse luci. Non costa niente in più e non c'è una sala di ripiego.", "In sessanta si paga lo stesso prezzo a persona di un matrimonio da centodieci, senza il minimo di ottanta coperti.", "Si conferma con 1.000 € di acconto e 1.000 € di deposito. Il saldo si paga nella settimana del matrimonio.", "Bride experience in regalo per chi conferma entro gennaio. Il 2028 resta al prezzo 2027 per chi conferma entro il 31 gennaio 2027.", "Si fa un solo matrimonio a weekend e a inizio ottobre restavano 19 sabati liberi.", "Extra: cerimonia simbolica 350 €, auto d'epoca 500 €, ore dopo l'una 350 € l'ora, pulizia dei bagni durante la festa 150 €. Coordinamento del giorno e pre wedding sono su preventivo."]}, "scenari": [{"id": "portico", "nome": "Giulia", "ruolo": "La sposa", "voce": "QITiGyM4owEZrBEf0QV8", "tag": "La pagoda e la pioggia", "situazione": "Ha amato la corte e le camere, ma la pagoda non l'ha vista montata. E un'altra location ha un portico in muratura.", "apertura": "Allora... è tutto bellissimo, davvero. Però te lo devo dire, la pagoda mi lascia un po' così.", "obiezioni": ["La pagoda non l'ho vista montata e nessuno si è ancora sposato sotto. E se piove forte davvero, col vento?", "Abbiamo visto un'altra location qui vicino con un portico in muratura, più o meno allo stesso prezzo.", "Mia mamma dice che per 3.500 euro vuole un tetto vero, non una tenda.", "A settembre la sera fa freddo, e il prato bagnato? Gli invitati coi tacchi nel fango?"]}, {"id": "prezzo", "nome": "Marco", "ruolo": "Lo sposo che tiene i conti", "voce": "GOAZNavLupajyL3YafaD", "tag": "Il prezzo e gli extra", "situazione": "Alla sposa piace tutto, lui fa i conti. Vuole uno sconto e teme le sorprese dopo il sì.", "apertura": "Guarda, alla mia futura moglie piace tantissimo, si vede. Io però devo far quadrare i conti. Parliamo un attimo di numeri?", "obiezioni": ["3.500 più IVA per una cascina mi sembrano tanti. Poi c'è il catering a parte, e a conti fatti arriviamo a venti, venticinquemila euro.", "Facciamo 3.000 tondi e chiudiamo stasera?", "Le camere a noi non servono, siamo di Milano e torniamo a casa. Toglietele e abbassate il prezzo.", "Il vino della vostra cantina obbligatorio è un modo per guadagnarci sopra, no?", "Le luci, le zanzare, le ore dopo l'una: dove sono le sorprese?"]}, {"id": "ci-pensiamo", "nome": "Chiara", "ruolo": "La sposa indecisa", "voce": "kAzI34nYjizE0zON6rXv", "tag": "«Ci pensiamo»", "situazione": "Entusiasta, ma ha promesso di vedere altre due location e vuole decidere a febbraio con il fidanzato.", "apertura": "Che giornata! Mi è piaciuto tutto, giuro. Però noi... ci prendiamo un attimo per pensarci, eh.", "obiezioni": ["Abbiamo promesso di vedere altri due posti a dicembre.", "Non voglio decidere di pancia, è il matrimonio, è una volta sola.", "Davide non c'è, decidiamo insieme a Natale quando torna.", "Ma tanto le date ci sono ancora, no? Siamo a novembre."]}, {"id": "mamma", "nome": "Rossana", "ruolo": "La mamma della sposa", "voce": "MuTiG4dbrEGYEy3XP4iP", "tag": "Diffidenza", "situazione": "Paga metà del matrimonio. Pensa che la tenuta sia giovane, e la parola «agriturismo» le gira in testa.", "apertura": "Buonasera. Io sono la mamma, eh. Mia figlia è innamorata, si vede. Ma io qualche domanda la devo fare.", "obiezioni": ["Siete giovani, voi. Quanti matrimoni avete fatto, davvero?", "Ma è un agriturismo? Il mangiare non lo fate voi?", "Centoventi persone: i bagni bastano? E il parcheggio?", "E quella tenda, se viene giù un temporale?", "Mia figlia si innamora di tutto. Io devo pensare ai soldi."]}]};
 const $ = s => document.querySelector(s);
 const scelta = { scenario: CFG.scenari[0].id, difficolta: 'realistica', modo: 'voce' };
 const CHIAVE = 'allenatore-' + CFG.slug;
@@ -260,9 +270,15 @@ CFG.scenari.forEach((s, i) => {
   b.onclick = () => {
     scelta.scenario = s.id;
     document.querySelectorAll('.scen').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
+    mostraObiezioni(s);
   };
   $('#scenari').appendChild(b);
 });
+function mostraObiezioni(s) {
+  $('#obiez-nome').textContent = s.nome;
+  $('#obiez-lista').replaceChildren(...(s.obiezioni || []).map(o => { const li = document.createElement('li'); li.textContent = o; return li; }));
+}
+mostraObiezioni(CFG.scenari[0]);
 
 const NOTE = {
   realistica: 'Due obiezioni, più una che non ti dice finché non fai la domanda giusta. Quando è pronta te lo fa capire.',
@@ -311,6 +327,20 @@ function lista(titolo, testo, cls) {
   if (!voci.length) return '';
   return '<h3>' + titolo + '</h3><ul class="' + cls + '">' + voci.map(v => '<li>' + esc(v) + '</li>').join('') + '</ul>';
 }
+/* le obiezioni fatte, con l'esito; per le pagelle vecchie, l'elenco del personaggio */
+function listaObiezioni(p) {
+  const voci = String(p.obiezioni || '').split('|').map(x => x.trim()).filter(Boolean);
+  if (!voci.length) {
+    const s = CFG.scenari.find(x => x.id === (p.scenario || scelta.scenario));
+    return s && s.obiezioni ? lista('Le obiezioni del personaggio', s.obiezioni.join('|'), 'obj') : '';
+  }
+  return '<h3>Le obiezioni che ti ha fatto</h3><ul class="obj">' + voci.map(v => {
+    const m = v.match(/^(.*?)\s*[—–-]\s*(non risolta|risolta)(.*)$/i);
+    if (!m) return '<li>' + esc(v) + '</li>';
+    const ok = m[2].toLowerCase() === 'risolta';
+    return '<li>' + esc(m[1]) + ' <b class="' + (ok ? 'si' : 'no') + '">' + (ok ? 'risolta' : 'non risolta') + '</b>' + esc(m[3]) + '</li>';
+  }).join('') + '</ul>';
+}
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function mostraPagella(p, nuova) {
   const d = document.createElement('article'); d.className = 'pagella';
@@ -320,6 +350,7 @@ function mostraPagella(p, nuova) {
     lista('Fatto bene', p.bene, 'bene') + lista('Da cambiare', p.migliorare, 'meglio') +
     '<h3>La frase da provare</h3><p class="frase">' + esc(p.frase_da_provare) + '</p>' +
     '<h3>L\'obiezione nascosta</h3><p>' + esc(p.obiezione_nascosta) + '</p>' +
+    listaObiezioni(p) +
     lista('Errori', p.errori, 'err');
   $('#feed').appendChild(d); d.scrollIntoView({ block: 'start' });
   if (nuova) {
