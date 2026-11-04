@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>La sposa difficile · Tenuta Pizzone</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23B9532F'/%3E%3C/svg%3E">
+<style>
+@font-face{font-family:'Cormorant Garamond';src:url('img/CormorantGaramond-500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url('img/CormorantGaramond-500i.woff2') format('woff2');font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:'Outfit';src:url('img/Outfit-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+:root{
+    --bg:#F6F6F2;
+    --card:#FFFFFF;
+    --soft:#ECEDE6;
+    --ink:#1C231F;
+    --mute:#55605A;
+    --line:#DADDD3;
+    --acc:#B9532F;
+    --acc-h:#A2461F;
+    --acc-soft:#F6E6DE;
+    --ok:#2F6B4F;
+    --ko:#9B3B36;
+  --serif:'Cormorant Garamond','Iowan Old Style',Georgia,serif;
+  --sans:'Outfit','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+  --r:14px;
+  --e:cubic-bezier(.16,1,.3,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#141815;
+    --card:#1C211E;
+    --soft:#232925;
+    --ink:#ECEDE6;
+    --mute:#A3ABA5;
+    --line:#333A35;
+    --acc:#D7714C;
+    --acc-h:#E08460;
+    --acc-soft:#3A2720;
+    --ok:#6FB08E;
+    --ko:#E0857F;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);min-height:100dvh}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+[hidden]{display:none!important}
+
+/* intestazione */
+.hero{position:relative;color:#fff;background:#1C231F}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,24,21,.35),rgba(20,24,21,.15) 40%,rgba(20,24,21,.8))}
+.hero .wrap{z-index:1}
+.hero .wrap{position:relative;padding-top:max(28px,env(safe-area-inset-top));padding-bottom:28px}
+.marchio{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.9}
+.hero h1{font:500 44px/1.02 var(--serif);margin:56px 0 10px;letter-spacing:-.01em}
+.hero h1 em{font-style:italic}
+.hero p{max-width:34ch;font-size:16px;opacity:.95}
+
+/* passi */
+.passo{padding:28px 0 8px}
+.passo h2{font:500 26px/1.15 var(--serif);margin-bottom:12px}
+.passo .n{font:400 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+
+.scenari{display:grid;gap:10px}
+.scen{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;transition:border-color .15s,transform .1s ease-out}
+.scen:active{transform:scale(.99)}
+.scen[aria-checked="true"]{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
+.scen .ini{grid-row:span 3;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--acc-soft);color:var(--acc);font:500 22px/1 var(--serif)}
+.scen b{font:500 21px/1.1 var(--serif)}
+.scen .ruolo{font-size:13px;color:var(--mute)}
+.scen .sit{font-size:14px;grid-column:2}
+.scen .tag{grid-column:2;justify-self:start;margin-top:6px;font-size:12px;padding:3px 9px;border-radius:99px;background:var(--soft);color:var(--ink)}
+
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);border-radius:99px;padding:4px;gap:4px}
+.seg button{border:0;background:none;border-radius:99px;padding:10px 8px;font-size:15px;color:var(--mute);transition:background .15s,color .15s}
+.seg button[aria-checked="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(28,35,31,.12)}
+.nota{font-size:13px;color:var(--mute);margin-top:8px}
+
+.btn{display:block;width:100%;border:0;border-radius:99px;background:var(--acc);color:#fff;padding:16px 20px;font-size:17px;letter-spacing:.01em;transition:background .15s,transform .1s ease-out;white-space:nowrap}
+.btn:hover{background:var(--acc-h)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.sec{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.ia{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--mute);margin:14px 0 0}
+.ia span{flex:none;font-size:11px;font-weight:600;letter-spacing:.06em;border:1px solid currentColor;border-radius:4px;padding:1px 5px;margin-top:2px}
+
+details{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-top:12px}
+summary{padding:14px 16px;cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between}
+summary::after{content:"+";color:var(--mute)}
+details[open] summary::after{content:"–"}
+details ul{padding:0 16px 16px 34px;display:grid;gap:8px;font-size:15px}
+
+.storico{display:grid;gap:8px}
+.storico .riga{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;font-size:14px;text-align:left;width:100%}
+.storico .voto{font:500 26px/1 var(--serif);min-width:2ch;text-align:center}
+.storico .quando{color:var(--mute);font-size:12px}
+.vuoto{font-size:14px;color:var(--mute);padding:14px;border:1px dashed var(--line);border-radius:var(--r)}
+footer{padding:32px 0 calc(32px + env(safe-area-inset-bottom));font-size:12px;color:var(--mute)}
+
+/* trattativa */
+.call{height:100dvh;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto}
+.call-top{display:flex;justify-content:space-between;align-items:center;padding-top:max(16px,env(safe-area-inset-top));padding-bottom:8px}
+.call-top .chi b{font:500 24px/1.1 var(--serif);display:block}
+.call-top .chi span{font-size:13px;color:var(--mute)}
+.timer{font-variant-numeric:tabular-nums;font-size:14px;color:var(--mute)}
+.palco{display:grid;justify-items:center;gap:12px;padding:18px 0 10px}
+.orb{width:132px;height:132px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--acc-soft),var(--acc) 70%);transform:scale(var(--s,1));transition:transform .09s linear;box-shadow:0 10px 40px -12px var(--acc)}
+.orb.ascolta{background:radial-gradient(circle at 35% 30%,var(--card),var(--ok) 75%);box-shadow:0 10px 40px -12px var(--ok)}
+.stato{font-size:14px;color:var(--mute);min-height:1.5em}
+.feed{overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:8px 0 12px;scroll-behavior:smooth}
+.msg{max-width:85%;padding:10px 14px;border-radius:16px;font-size:15px;line-height:1.45;animation:entra .25s var(--e)}
+.msg.agent{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
+.msg.user{background:var(--acc-soft);border-bottom-right-radius:4px;align-self:flex-end}
+.msg small{display:block;font-size:11px;color:var(--mute);margin-bottom:2px;letter-spacing:.04em;text-transform:uppercase}
+@keyframes entra{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.comandi{display:grid;gap:8px;padding:10px 0 calc(14px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 18px)}
+.scrivi{display:grid;grid-template-columns:1fr auto;gap:8px}
+.scrivi textarea{resize:none;border:1px solid var(--line);background:var(--card);border-radius:16px;padding:12px 14px;min-height:48px;max-height:140px}
+.scrivi button{border:0;border-radius:99px;background:var(--acc);color:#fff;padding:0 18px}
+.due{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.errore{background:var(--acc-soft);color:var(--ink);border-radius:var(--r);padding:12px 14px;font-size:14px}
+
+/* pagella */
+.pagella{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin:6px 0 4px;animation:entra .35s var(--e)}
+.pag-testa{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;margin-bottom:12px}
+.pag-voto{font:500 60px/1 var(--serif)}
+.pag-voto small{font-size:22px;color:var(--mute)}
+.esito{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;background:var(--soft)}
+.esito.confermato{background:var(--ok);color:#fff}
+.esito.perso{background:var(--ko);color:#fff}
+.pag-ria{font:italic 500 20px/1.3 var(--serif);margin-top:6px}
+.pagella h3{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:16px 0 6px;font-weight:500}
+.pagella ul{padding-left:20px;display:grid;gap:6px;font-size:15px}
+.pagella .bene li::marker{content:"+  ";color:var(--ok)}
+.pagella .meglio li::marker{content:"→  ";color:var(--acc)}
+.pagella .err li::marker{content:"!  ";color:var(--ko)}
+.frase{border-left:3px solid var(--acc);padding:4px 0 4px 12px;font:italic 500 19px/1.35 var(--serif)}
+
+@media (min-width:768px){
+  .hero h1{font-size:60px;margin-top:80px}
+  .scenari{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .orb{transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<main id="home">
+  <header class="hero">
+    <img src="img/corte.jpg" alt="" aria-hidden="true">
+    <div class="wrap">
+      <div class="marchio">Tenuta Pizzone · Allenamento alla chiusura</div>
+      <h1 id="titolo"></h1>
+      <p id="sottotitolo"></p>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="passo" aria-labelledby="h-chi">
+      <div class="n">Primo passo</div>
+      <h2 id="h-chi">Con chi ti alleni</h2>
+      <div class="scenari" id="scenari" role="radiogroup" aria-labelledby="h-chi"></div>
+    </section>
+
+    <section class="passo" aria-labelledby="h-diff">
+      <div class="n">Secondo passo</div>
+      <h2 id="h-diff">Quanto deve essere dura</h2>
+      <div class="seg" role="radiogroup" aria-labelledby="h-diff" data-gruppo="difficolta">
+        <button type="button" role="radio" data-v="difficile" aria-checked="true">Difficile</button>
+        <button type="button" role="radio" data-v="spietata" aria-checked="false">Spietata</button>
+      </div>
+      <p class="nota" id="nota-diff">Tre o quattro obiezioni, più una che non ti dice finché non fai la domanda giusta.</p>
+    </section>
+
+    <section class="passo" aria-labelledby="h-modo">
+      <div class="n">Terzo passo</div>
+      <h2 id="h-modo">Come parlate</h2>
+      <div class="seg" role="radiogroup" aria-labelledby="h-modo" data-gruppo="modo">
+        <button type="button" role="radio" data-v="voce" aria-checked="true">A voce</button>
+        <button type="button" role="radio" data-v="testo" aria-checked="false">Scrivendo</button>
+      </div>
+      <p class="nota" id="nota-modo">Con le cuffie o in una stanza tranquilla. Il telefono ti chiederà il microfono.</p>
+    </section>
+
+    <section class="passo">
+      <button class="btn" id="inizia" type="button">Inizia la trattativa</button>
+      <p class="ia"><span>IA</span> È una simulazione: voce e risposte sono generate da un'intelligenza artificiale, non c'è nessuna persona dall'altra parte. Per chiudere prima, di' «stop, pagella».</p>
+      <details>
+        <summary>Ripassa la scheda prima di iniziare</summary>
+        <ul id="ripasso"></ul>
+      </details>
+    </section>
+
+    <section class="passo" aria-labelledby="h-storico">
+      <div class="n">I tuoi allenamenti</div>
+      <h2 id="h-storico">Com'è andata finora</h2>
+      <div class="storico" id="storico"></div>
+    </section>
+
+    <footer>Le pagelle restano solo su questo dispositivo. L'audio della conversazione non viene registrato e il testo è cancellato dopo 30 giorni.</footer>
+  </div>
+</main>
+
+<section id="call" class="call wrap" hidden aria-live="polite">
+  <div class="call-top">
+    <div class="chi"><b id="c-nome"></b><span id="c-ruolo"></span></div>
+    <div class="timer" id="timer">00:00</div>
+  </div>
+  <div class="palco" id="palco">
+    <div class="orb" id="orb" aria-hidden="true"></div>
+    <div class="stato" id="stato">Mi collego…</div>
+  </div>
+  <div class="feed" id="feed"></div>
+  <div class="comandi">
+    <form class="scrivi" id="scrivi" hidden>
+      <textarea id="testo" rows="1" placeholder="Scrivi la tua risposta…" aria-label="Scrivi la tua risposta" enterkeyhint="send"></textarea>
+      <button type="submit" aria-label="Invia">Invia</button>
+    </form>
+    <div class="due">
+      <button class="btn sec" type="button" id="b-pagella">Stop, pagella</button>
+      <button class="btn sec" type="button" id="b-chiudi">Chiudi</button>
+    </div>
+  </div>
+</section>
+
+<script src="elevenlabs-client-1.28.0.js"></script>
+<script>
+const CFG = {"slug": "tenuta-pizzone", "agent_id": "agent_9801m6k0c221ecwvh67m15bnwvqv", "pagina": {"titolo": "La sposa difficile", "sottotitolo": "L'open day è finito e siete davanti al camino, con un calice. Lei ha ancora dei dubbi e tu hai dieci minuti per farla decidere.", "allievo": "Caterina", "ripasso": ["3.500 € + IVA 10% per la stagione 2027. Dentro ci sono la tenuta in esclusiva fino all'una, le cinque camere con la colazione, la pagoda, le luci della corte, della pagoda e del taglio torta, l'antizanzare, la degustazione in cantina e l'aiuto a scegliere i fornitori.", "Il vino della cantina è illimitato e già nel prezzo a persona con Langella Banqueting, Doma Catering e Farumi Party Service.", "Garanzia Cielo Aperto: se piove, aperitivo, cena e ballo vanno sotto la pagoda chiusa, con gli stessi allestimenti e le stesse luci. Non costa niente in più e non c'è una sala di ripiego.", "In sessanta si paga lo stesso prezzo a persona di un matrimonio da centodieci, senza il minimo di ottanta coperti.", "Si conferma con 1.000 € di acconto e 1.000 € di deposito. Il saldo si paga nella settimana del matrimonio.", "Bride experience in regalo per chi conferma entro gennaio. Il 2028 resta al prezzo 2027 per chi conferma entro il 31 gennaio 2027.", "Si fa un solo matrimonio a weekend e a inizio ottobre restavano 19 sabati liberi.", "Extra: cerimonia simbolica 350 €, auto d'epoca 500 €, ore dopo l'una 350 € l'ora, pulizia dei bagni durante la festa 150 €. Coordinamento del giorno e pre wedding sono su preventivo."]}, "scenari": [{"id": "portico", "nome": "Giulia", "ruolo": "La sposa", "voce": "QITiGyM4owEZrBEf0QV8", "tag": "La pagoda e la pioggia", "situazione": "Ha amato la corte e le camere, ma la pagoda non l'ha vista montata. E un'altra location ha un portico in muratura.", "apertura": "Allora... è tutto bellissimo, davvero. Però te lo devo dire, la pagoda mi lascia un po' così."}, {"id": "prezzo", "nome": "Marco", "ruolo": "Lo sposo che tiene i conti", "voce": "GOAZNavLupajyL3YafaD", "tag": "Il prezzo e gli extra", "situazione": "Alla sposa piace tutto, lui fa i conti. Vuole uno sconto e teme le sorprese dopo il sì.", "apertura": "Guarda, alla mia futura moglie piace tantissimo, si vede. Io però devo far quadrare i conti. Parliamo un attimo di numeri?"}, {"id": "ci-pensiamo", "nome": "Chiara", "ruolo": "La sposa indecisa", "voce": "kAzI34nYjizE0zON6rXv", "tag": "«Ci pensiamo»", "situazione": "Entusiasta, ma ha promesso di vedere altre due location e vuole decidere a febbraio con il fidanzato.", "apertura": "Che giornata! Mi è piaciuto tutto, giuro. Però noi... ci prendiamo un attimo per pensarci, eh."}, {"id": "mamma", "nome": "Rossana", "ruolo": "La mamma della sposa", "voce": "MuTiG4dbrEGYEy3XP4iP", "tag": "Diffidenza", "situazione": "Paga metà del matrimonio. Pensa che la tenuta sia giovane, e la parola «agriturismo» le gira in testa.", "apertura": "Buonasera. Io sono la mamma, eh. Mia figlia è innamorata, si vede. Ma io qualche domanda la devo fare."}]};
+const $ = s => document.querySelector(s);
+const scelta = { scenario: CFG.scenari[0].id, difficolta: 'difficile', modo: 'voce' };
+const CHIAVE = 'allenatore-' + CFG.slug;
+let conv = null, t0 = 0, tick = null, raf = null, pagellaVista = false;
+
+$('#titolo').textContent = CFG.pagina.titolo;
+$('#sottotitolo').textContent = CFG.pagina.sottotitolo;
+CFG.pagina.ripasso.forEach(r => { const li = document.createElement('li'); li.textContent = r; $('#ripasso').appendChild(li); });
+
+/* scenari */
+CFG.scenari.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'scen'; b.setAttribute('role', 'radio');
+  b.setAttribute('aria-checked', i === 0 ? 'true' : 'false'); b.dataset.id = s.id;
+  b.innerHTML = '<span class="ini"></span><b></b><span class="ruolo"></span><span class="sit"></span><span class="tag"></span>';
+  b.querySelector('.ini').textContent = s.nome[0];
+  b.querySelector('b').textContent = s.nome;
+  b.querySelector('.ruolo').textContent = s.ruolo;
+  b.querySelector('.sit').textContent = s.situazione;
+  b.querySelector('.tag').textContent = s.tag;
+  b.onclick = () => {
+    scelta.scenario = s.id;
+    document.querySelectorAll('.scen').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
+  };
+  $('#scenari').appendChild(b);
+});
+
+const NOTE = {
+  difficile: 'Tre o quattro obiezioni, più una che non ti dice finché non fai la domanda giusta.',
+  spietata: 'Tutte le obiezioni, e ognuna torna almeno una volta. Per chiudere serve un motivo vero per decidere oggi.',
+  voce: 'Con le cuffie o in una stanza tranquilla. Il telefono ti chiederà il microfono.',
+  testo: 'Scrivi le risposte come le diresti. Utile per provare le frasi prima di dirle a voce.'
+};
+document.querySelectorAll('.seg').forEach(g => g.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  g.querySelectorAll('button').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
+  scelta[g.dataset.gruppo] = b.dataset.v;
+  $(g.dataset.gruppo === 'difficolta' ? '#nota-diff' : '#nota-modo').textContent = NOTE[b.dataset.v];
+}));
+
+/* storico, solo su questo dispositivo */
+function leggi() { try { return JSON.parse(localStorage.getItem(CHIAVE) || '[]'); } catch (e) { return []; } }
+function salva(p) { try { const a = leggi(); a.unshift(p); localStorage.setItem(CHIAVE, JSON.stringify(a.slice(0, 30))); } catch (e) {} }
+function storico() {
+  const box = $('#storico'); box.innerHTML = '';
+  const a = leggi();
+  if (!a.length) { box.innerHTML = '<div class="vuoto">Qui compaiono le pagelle. La prima volta è normale prendere 4 o 5.</div>'; return; }
+  a.forEach(p => {
+    const s = CFG.scenari.find(x => x.id === p.scenario) || { nome: p.scenario };
+    const r = document.createElement('button'); r.type = 'button'; r.className = 'riga';
+    r.innerHTML = '<span class="voto"></span><span><b></b><br><span class="quando"></span></span><span class="esito"></span>';
+    r.querySelector('.voto').textContent = p.voto;
+    r.querySelector('b').textContent = s.nome + ' · ' + p.difficolta;
+    r.querySelector('.quando').textContent = new Date(p.quando).toLocaleString('it-IT', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    const e = r.querySelector('.esito'); e.textContent = p.esito; e.classList.add(p.esito);
+    r.onclick = () => { apriCall(s, true); $('#stato').textContent = 'Pagella salvata'; mostraPagella(p, false); };
+    box.appendChild(r);
+  });
+}
+storico();
+
+/* trattativa */
+function aggiungi(ruolo, testo) {
+  const s = CFG.scenari.find(x => x.id === scelta.scenario);
+  const d = document.createElement('div'); d.className = 'msg ' + ruolo;
+  const sm = document.createElement('small'); sm.textContent = ruolo === 'agent' ? s.nome : CFG.pagina.allievo;
+  d.appendChild(sm); d.appendChild(document.createTextNode(testo));
+  $('#feed').appendChild(d); d.scrollIntoView({ block: 'end' });
+}
+function lista(titolo, testo, cls) {
+  const voci = String(testo || '').split('|').map(x => x.trim()).filter(x => x && x.toLowerCase() !== 'nessuno');
+  if (!voci.length) return '';
+  return '<h3>' + titolo + '</h3><ul class="' + cls + '">' + voci.map(v => '<li>' + esc(v) + '</li>').join('') + '</ul>';
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function mostraPagella(p, nuova) {
+  const d = document.createElement('article'); d.className = 'pagella';
+  d.innerHTML =
+    '<div class="pag-testa"><div class="pag-voto">' + esc(p.voto) + '<small>/10</small></div>' +
+    '<div><span class="esito ' + esc(p.esito) + '">' + esc(p.esito) + '</span><div class="pag-ria">' + esc(p.riassunto) + '</div></div></div>' +
+    lista('Fatto bene', p.bene, 'bene') + lista('Da cambiare', p.migliorare, 'meglio') +
+    '<h3>La frase da provare</h3><p class="frase">' + esc(p.frase_da_provare) + '</p>' +
+    '<h3>L\'obiezione nascosta</h3><p>' + esc(p.obiezione_nascosta) + '</p>' +
+    lista('Errori', p.errori, 'err');
+  $('#feed').appendChild(d); d.scrollIntoView({ block: 'start' });
+  if (nuova) { pagellaVista = true; salva(Object.assign({ quando: Date.now(), scenario: scelta.scenario, difficolta: scelta.difficolta }, p)); }
+}
+function apriCall(s, soloLettura) {
+  $('#home').hidden = true; $('#call').hidden = false; window.scrollTo(0, 0);
+  $('#c-nome').textContent = s.nome; $('#c-ruolo').textContent = s.ruolo;
+  $('#feed').innerHTML = ''; $('#timer').textContent = '00:00';
+  $('#scrivi').hidden = soloLettura || scelta.modo !== 'testo';
+  $('#palco').hidden = !soloLettura && scelta.modo === 'testo';
+  $('#b-pagella').hidden = !!soloLettura;
+  $('#b-chiudi').textContent = soloLettura ? 'Torna indietro' : 'Chiudi';
+}
+function chiudiVista() {
+  $('#call').hidden = true; $('#home').hidden = false; storico(); window.scrollTo(0, 0);
+}
+function vu() {
+  if (conv && scelta.modo === 'voce') {
+    let v = 0; try { v = conv.getOutputVolume(); } catch (e) {}
+    $('#orb').style.setProperty('--s', (1 + Math.min(v * 1.6, .35)).toFixed(3));
+  }
+  raf = requestAnimationFrame(vu);
+}
+function fine() {
+  clearInterval(tick); cancelAnimationFrame(raf); conv = null;
+  $('#orb').style.setProperty('--s', 1);
+  $('#stato').textContent = pagellaVista ? 'Allenamento finito' : 'Conversazione chiusa';
+  $('#b-pagella').hidden = true; $('#scrivi').hidden = true; $('#b-chiudi').textContent = 'Torna indietro';
+}
+
+$('#inizia').onclick = async () => {
+  const s = CFG.scenari.find(x => x.id === scelta.scenario);
+  const testo = scelta.modo === 'testo';
+  pagellaVista = false;
+  $('#inizia').disabled = true;
+  apriCall(s, false);
+  $('#stato').textContent = testo ? '' : 'Mi collego…';
+  try {
+    if (!testo) await navigator.mediaDevices.getUserMedia({ audio: true });
+    conv = await ElevenLabsClient.Conversation.startSession({
+      agentId: CFG.agent_id,
+      connectionType: testo ? 'websocket' : 'webrtc',
+      textOnly: testo,
+      dynamicVariables: { scenario: s.id, difficolta: scelta.difficolta, apertura: s.apertura },
+      overrides: { agent: { firstMessage: s.apertura }, tts: { voiceId: s.voce }, conversation: { textOnly: testo } },
+      clientTools: { mostra_pagella: p => { mostraPagella(p, true); return 'Pagella mostrata.'; } },
+      onConnect: () => { t0 = Date.now(); tick = setInterval(() => { const x = Math.floor((Date.now() - t0) / 1000); $('#timer').textContent = String(Math.floor(x / 60)).padStart(2, '0') + ':' + String(x % 60).padStart(2, '0'); }, 1000); },
+      onMessage: m => {
+        if (!m.message) return;
+        if (m.role === 'user') { if (!testo) aggiungi('user', m.message); return; }   /* scrivendo, il messaggio è già nel feed */
+        aggiungi('agent', m.message);
+      },
+      onModeChange: ({ mode }) => {
+        if (testo) return;
+        $('#orb').classList.toggle('ascolta', mode === 'listening');
+        $('#stato').textContent = mode === 'speaking' ? s.nome + ' sta parlando' : 'Tocca a te';
+      },
+      onDisconnect: fine,
+      onError: msg => { const d = document.createElement('div'); d.className = 'errore'; d.textContent = 'Qualcosa non va: ' + msg; $('#feed').appendChild(d); }
+    });
+    if (!testo) vu(); else $('#testo').focus();
+  } catch (e) {
+    const d = document.createElement('div'); d.className = 'errore';
+    const m = String(e && e.message ? e.message : e);
+    d.textContent = e && e.name === 'NotAllowedError'
+      ? 'Serve il permesso del microfono. Riprova e tocca «Consenti», oppure scegli «Scrivendo».'
+      : /payment|quota|limit/i.test(m)
+        ? 'Il simulatore oggi non è disponibile (account vocale in sospeso o limite giornaliero raggiunto). Avvisa Cristian.'
+        : 'Non riesco a collegarmi: ' + m;
+    $('#feed').appendChild(d); fine();
+  } finally { $('#inizia').disabled = false; }
+};
+
+$('#scrivi').onsubmit = e => {
+  e.preventDefault();
+  const t = $('#testo').value.trim(); if (!t || !conv) return;
+  conv.sendUserMessage(t); aggiungi('user', t); $('#testo').value = '';
+};
+$('#testo').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#scrivi').requestSubmit(); } });
+$('#b-pagella').onclick = () => { if (!conv) return; conv.sendUserMessage('Stop, fine allenamento. Dammi la pagella.'); if (scelta.modo === 'testo') aggiungi('user', 'Stop, pagella.'); };
+$('#b-chiudi').onclick = async () => { if (conv) { try { await conv.endSession(); } catch (e) {} fine(); } chiudiVista(); };
+</script>
+</body>
+</html>
