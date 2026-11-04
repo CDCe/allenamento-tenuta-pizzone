@@ -177,10 +177,10 @@ footer{padding:32px 0 calc(32px + env(safe-area-inset-bottom));font-size:12px;co
       <div class="n">Secondo passo</div>
       <h2 id="h-diff">Quanto deve essere dura</h2>
       <div class="seg" role="radiogroup" aria-labelledby="h-diff" data-gruppo="difficolta">
-        <button type="button" role="radio" data-v="difficile" aria-checked="true">Difficile</button>
-        <button type="button" role="radio" data-v="spietata" aria-checked="false">Spietata</button>
+        <button type="button" role="radio" data-v="realistica" aria-checked="true">Realistica</button>
+        <button type="button" role="radio" data-v="difficile" aria-checked="false">Difficile</button>
       </div>
-      <p class="nota" id="nota-diff">Tre o quattro obiezioni, più una che non ti dice finché non fai la domanda giusta.</p>
+      <p class="nota" id="nota-diff">Due obiezioni, più una che non ti dice finché non fai la domanda giusta. Quando è pronta te lo fa capire.</p>
     </section>
 
     <section class="passo" aria-labelledby="h-modo">
@@ -238,7 +238,7 @@ footer{padding:32px 0 calc(32px + env(safe-area-inset-bottom));font-size:12px;co
 <script>
 const CFG = {"slug": "tenuta-pizzone", "agent_id": "agent_9801m6k0c221ecwvh67m15bnwvqv", "pagina": {"titolo": "La sposa difficile", "sottotitolo": "L'open day è finito e siete davanti al camino, con un calice. Lei ha ancora dei dubbi e tu hai dieci minuti per farla decidere.", "allievo": "Caterina", "ripasso": ["3.500 € + IVA 10% per la stagione 2027. Dentro ci sono la tenuta in esclusiva fino all'una, le cinque camere con la colazione, la pagoda, le luci della corte, della pagoda e del taglio torta, l'antizanzare, la degustazione in cantina e l'aiuto a scegliere i fornitori.", "Il vino della cantina è illimitato e già nel prezzo a persona con Langella Banqueting, Doma Catering e Farumi Party Service.", "Garanzia Cielo Aperto: se piove, aperitivo, cena e ballo vanno sotto la pagoda chiusa, con gli stessi allestimenti e le stesse luci. Non costa niente in più e non c'è una sala di ripiego.", "In sessanta si paga lo stesso prezzo a persona di un matrimonio da centodieci, senza il minimo di ottanta coperti.", "Si conferma con 1.000 € di acconto e 1.000 € di deposito. Il saldo si paga nella settimana del matrimonio.", "Bride experience in regalo per chi conferma entro gennaio. Il 2028 resta al prezzo 2027 per chi conferma entro il 31 gennaio 2027.", "Si fa un solo matrimonio a weekend e a inizio ottobre restavano 19 sabati liberi.", "Extra: cerimonia simbolica 350 €, auto d'epoca 500 €, ore dopo l'una 350 € l'ora, pulizia dei bagni durante la festa 150 €. Coordinamento del giorno e pre wedding sono su preventivo."]}, "scenari": [{"id": "portico", "nome": "Giulia", "ruolo": "La sposa", "voce": "QITiGyM4owEZrBEf0QV8", "tag": "La pagoda e la pioggia", "situazione": "Ha amato la corte e le camere, ma la pagoda non l'ha vista montata. E un'altra location ha un portico in muratura.", "apertura": "Allora... è tutto bellissimo, davvero. Però te lo devo dire, la pagoda mi lascia un po' così."}, {"id": "prezzo", "nome": "Marco", "ruolo": "Lo sposo che tiene i conti", "voce": "GOAZNavLupajyL3YafaD", "tag": "Il prezzo e gli extra", "situazione": "Alla sposa piace tutto, lui fa i conti. Vuole uno sconto e teme le sorprese dopo il sì.", "apertura": "Guarda, alla mia futura moglie piace tantissimo, si vede. Io però devo far quadrare i conti. Parliamo un attimo di numeri?"}, {"id": "ci-pensiamo", "nome": "Chiara", "ruolo": "La sposa indecisa", "voce": "kAzI34nYjizE0zON6rXv", "tag": "«Ci pensiamo»", "situazione": "Entusiasta, ma ha promesso di vedere altre due location e vuole decidere a febbraio con il fidanzato.", "apertura": "Che giornata! Mi è piaciuto tutto, giuro. Però noi... ci prendiamo un attimo per pensarci, eh."}, {"id": "mamma", "nome": "Rossana", "ruolo": "La mamma della sposa", "voce": "MuTiG4dbrEGYEy3XP4iP", "tag": "Diffidenza", "situazione": "Paga metà del matrimonio. Pensa che la tenuta sia giovane, e la parola «agriturismo» le gira in testa.", "apertura": "Buonasera. Io sono la mamma, eh. Mia figlia è innamorata, si vede. Ma io qualche domanda la devo fare."}]};
 const $ = s => document.querySelector(s);
-const scelta = { scenario: CFG.scenari[0].id, difficolta: 'difficile', modo: 'voce' };
+const scelta = { scenario: CFG.scenari[0].id, difficolta: 'realistica', modo: 'voce' };
 const CHIAVE = 'allenatore-' + CFG.slug;
 let conv = null, t0 = 0, tick = null, raf = null, pagellaVista = false, attesaPagella = null, chiudiTra = null;
 
@@ -265,8 +265,8 @@ CFG.scenari.forEach((s, i) => {
 });
 
 const NOTE = {
-  difficile: 'Tre o quattro obiezioni, più una che non ti dice finché non fai la domanda giusta.',
-  spietata: 'Tutte le obiezioni, e ognuna torna almeno una volta. Per chiudere serve un motivo vero per decidere oggi.',
+  realistica: 'Due obiezioni, più una che non ti dice finché non fai la domanda giusta. Quando è pronta te lo fa capire.',
+  difficile: 'Tre obiezioni che tornano una volta, più quella nascosta. Non ti dà segnali: la chiusura la chiedi tu, con un motivo per decidere adesso.',
   voce: 'Con le cuffie o in una stanza tranquilla. Il telefono ti chiederà il microfono.',
   testo: 'Scrivi le risposte come le diresti. Utile per provare le frasi prima di dirle a voce.'
 };
