@@ -361,7 +361,8 @@ $('#inizia').onclick = async () => {
     if (!testo) await navigator.mediaDevices.getUserMedia({ audio: true });
     conv = await ElevenLabsClient.Conversation.startSession({
       agentId: CFG.agent_id,
-      connectionType: testo ? 'websocket' : 'webrtc',
+      // sempre websocket: con webrtc ElevenLabs non riceve l'header Origin e l'agente (require_origin_header) rifiuta la chiamata
+      connectionType: 'websocket',
       textOnly: testo,
       dynamicVariables: { scenario: s.id, difficolta: scelta.difficolta, apertura: s.apertura },
       overrides: { agent: { firstMessage: s.apertura }, tts: { voiceId: s.voce }, conversation: { textOnly: testo } },
