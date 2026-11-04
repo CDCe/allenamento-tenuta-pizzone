@@ -107,12 +107,12 @@ footer{padding:32px 0 calc(32px + env(safe-area-inset-bottom));font-size:12px;co
 
 /* trattativa */
 .call{height:100dvh;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto}
-.call-top{display:flex;justify-content:space-between;align-items:center;padding-top:max(16px,env(safe-area-inset-top));padding-bottom:8px}
+.call-top{display:flex;justify-content:space-between;align-items:center;padding-top:max(16px,env(safe-area-inset-top));padding-bottom:8px;position:relative;z-index:2;background:var(--bg)}
 .call-top .chi b{font:500 24px/1.1 var(--serif);display:block}
 .call-top .chi span{font-size:13px;color:var(--mute)}
 .timer{font-variant-numeric:tabular-nums;font-size:14px;color:var(--mute)}
-.palco{display:grid;justify-items:center;gap:12px;padding:18px 0 10px}
-.orb{width:132px;height:132px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--acc-soft),var(--acc) 70%);transform:scale(var(--s,1));transition:transform .09s linear;box-shadow:0 10px 40px -12px var(--acc)}
+.palco{display:grid;justify-items:center;gap:16px;padding:30px 0 14px;position:relative;z-index:1}
+.orb{width:116px;height:116px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--acc-soft),var(--acc) 70%);transform:scale(var(--s,1));transition:transform .09s linear;box-shadow:0 10px 40px -12px var(--acc)}
 .orb.ascolta{background:radial-gradient(circle at 35% 30%,var(--card),var(--ok) 75%);box-shadow:0 10px 40px -12px var(--ok)}
 .stato{font-size:14px;color:var(--mute);min-height:1.5em}
 .feed{overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:8px 0 12px;scroll-behavior:smooth}
@@ -240,7 +240,7 @@ const CFG = {"slug": "tenuta-pizzone", "agent_id": "agent_9801m6k0c221ecwvh67m15
 const $ = s => document.querySelector(s);
 const scelta = { scenario: CFG.scenari[0].id, difficolta: 'difficile', modo: 'voce' };
 const CHIAVE = 'allenatore-' + CFG.slug;
-let conv = null, t0 = 0, tick = null, raf = null, pagellaVista = false;
+let conv = null, t0 = 0, tick = null, raf = null, pagellaVista = false, attesaPagella = null, chiudiTra = null;
 
 $('#titolo').textContent = CFG.pagina.titolo;
 $('#sottotitolo').textContent = CFG.pagina.sottotitolo;
@@ -322,8 +322,16 @@ function mostraPagella(p, nuova) {
     '<h3>L\'obiezione nascosta</h3><p>' + esc(p.obiezione_nascosta) + '</p>' +
     lista('Errori', p.errori, 'err');
   $('#feed').appendChild(d); d.scrollIntoView({ block: 'start' });
-  if (nuova) { pagellaVista = true; salva(Object.assign({ quando: Date.now(), scenario: scelta.scenario, difficolta: scelta.difficolta }, p)); }
+  if (nuova) {
+    pagellaVista = true; clearTimeout(attesaPagella);
+    salva(Object.assign({ quando: Date.now(), scenario: scelta.scenario, difficolta: scelta.difficolta }, p));
+    $('#b-pagella').hidden = true; $('#stato').textContent = 'Ecco la pagella';
+    chiudiTra = setTimeout(chiudiSessione, 25000);   /* rete di sicurezza se il commento finale non arriva */
+  }
 }
+/* dopo la pagella la chiamata si chiude da sola, appena finisce il commento a voce (o il messaggio scritto) */
+function dopoPagella() { if (pagellaVista && conv) { clearTimeout(chiudiTra); chiudiTra = setTimeout(chiudiSessione, scelta.modo === 'voce' ? 3000 : 1500); } }
+async function chiudiSessione() { clearTimeout(chiudiTra); if (conv) { const c = conv; try { await c.endSession(); } catch (e) {} fine(); } }
 function apriCall(s, soloLettura) {
   $('#home').hidden = true; $('#call').hidden = false; window.scrollTo(0, 0);
   $('#c-nome').textContent = s.nome; $('#c-ruolo').textContent = s.ruolo;
@@ -339,12 +347,12 @@ function chiudiVista() {
 function vu() {
   if (conv && scelta.modo === 'voce') {
     let v = 0; try { v = conv.getOutputVolume(); } catch (e) {}
-    $('#orb').style.setProperty('--s', (1 + Math.min(v * 1.6, .35)).toFixed(3));
+    $('#orb').style.setProperty('--s', (1 + Math.min(v * 1.2, .2)).toFixed(3));   /* al massimo +20%: resta dentro il palco e non copre il nome */
   }
   raf = requestAnimationFrame(vu);
 }
 function fine() {
-  clearInterval(tick); cancelAnimationFrame(raf); conv = null;
+  clearInterval(tick); cancelAnimationFrame(raf); clearTimeout(attesaPagella); clearTimeout(chiudiTra); conv = null;
   $('#orb').style.setProperty('--s', 1);
   $('#stato').textContent = pagellaVista ? 'Allenamento finito' : 'Conversazione chiusa';
   $('#b-pagella').hidden = true; $('#scrivi').hidden = true; $('#b-chiudi').textContent = 'Torna indietro';
@@ -354,6 +362,7 @@ $('#inizia').onclick = async () => {
   const s = CFG.scenari.find(x => x.id === scelta.scenario);
   const testo = scelta.modo === 'testo';
   pagellaVista = false;
+  $('#b-pagella').disabled = false; $('#b-pagella').textContent = 'Stop, pagella';
   $('#inizia').disabled = true;
   apriCall(s, false);
   $('#stato').textContent = testo ? '' : 'Mi collego…';
@@ -372,10 +381,16 @@ $('#inizia').onclick = async () => {
         if (!m.message) return;
         if (m.role === 'user') { if (!testo) aggiungi('user', m.message); return; }   /* scrivendo, il messaggio è già nel feed */
         aggiungi('agent', m.message);
+        if (testo) dopoPagella();
       },
       onModeChange: ({ mode }) => {
         if (testo) return;
         $('#orb').classList.toggle('ascolta', mode === 'listening');
+        if (pagellaVista) {   /* parla ancora: aspetto che finisca il commento; tace: chiudo */
+          if (mode === 'listening') dopoPagella(); else { clearTimeout(chiudiTra); chiudiTra = setTimeout(chiudiSessione, 25000); }
+          return;
+        }
+        if ($('#b-pagella').disabled) return;   /* in attesa della pagella lo stato resta «Preparo la pagella…» */
         $('#stato').textContent = mode === 'speaking' ? s.nome + ' sta parlando' : 'Tocca a te';
       },
       onDisconnect: fine,
@@ -400,7 +415,20 @@ $('#scrivi').onsubmit = e => {
   conv.sendUserMessage(t); aggiungi('user', t); $('#testo').value = '';
 };
 $('#testo').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#scrivi').requestSubmit(); } });
-$('#b-pagella').onclick = () => { if (!conv) return; conv.sendUserMessage('Stop, fine allenamento. Dammi la pagella.'); if (scelta.modo === 'testo') aggiungi('user', 'Stop, pagella.'); };
+/* un solo invio: premere di nuovo interrompeva la risposta in corso e la pagella non arrivava mai */
+$('#b-pagella').onclick = () => {
+  if (!conv || $('#b-pagella').disabled) return;
+  const b = $('#b-pagella'); b.disabled = true; b.textContent = 'Preparo la pagella…';
+  $('#stato').textContent = 'Preparo la pagella…';
+  if (scelta.modo === 'voce') { try { conv.setMicMuted(true); } catch (e) {} }   /* niente rumori che la interrompano */
+  conv.sendUserMessage('Stop, fine allenamento. Dammi la pagella.');
+  if (scelta.modo === 'testo') aggiungi('user', 'Stop, pagella.');
+  attesaPagella = setTimeout(() => {   /* se dopo 30 secondi non è arrivata, si può richiedere */
+    if (pagellaVista || !conv) return;
+    b.disabled = false; b.textContent = 'Riprova la pagella'; $('#stato').textContent = 'La pagella non è arrivata';
+    if (scelta.modo === 'voce') { try { conv.setMicMuted(false); } catch (e) {} }
+  }, 30000);
+};
 $('#b-chiudi').onclick = async () => { if (conv) { try { await conv.endSession(); } catch (e) {} fine(); } chiudiVista(); };
 </script>
 </body>
